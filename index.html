@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Мои дни">
+<meta name="description" content="Личный дневник, который хранится только на этом устройстве">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self';">
+<link rel="manifest" href="./manifest.json"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png"><link rel="stylesheet" href="./app.css">
+<title>Мои дни — личный дневник</title>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="#" aria-label="Мои дни, на главную"><span class="brandmark">🌱</span><span><b>Мои дни</b><small>тихое место для себя</small></span></a><div class="top-actions"><span class="private-label">🔒 Только на устройстве</span><button class="icon-button" id="installButton" aria-label="Установить приложение" title="Установить приложение">＋</button></div></header>
+<main class="shell">
+<section class="screen active" id="screen-today" aria-labelledby="todayHeading">
+<div class="screen-title"><div><p class="kicker">МОЙ ДНЕВНИК</p><h1 id="todayHeading">Сегодня</h1></div><div class="date-controls"><button class="round-button" id="previousDay" aria-label="Предыдущий день">‹</button><button class="date-pill" id="todayDate"></button><button class="round-button" id="nextDay" aria-label="Следующий день">›</button></div></div>
+<div class="columns">
+<div class="primary-column">
+<article class="card">
+<div class="section-heading"><div><p class="kicker">ОДИН МОМЕНТ ЗА ДРУГИМ</p><h2>Как ты себя чувствуешь?</h2></div></div>
+<div class="mood-grid" id="moodGrid" role="group" aria-label="Выбор настроения"></div>
+<div class="soft-divider"></div>
+<div class="section-heading"><div><p class="kicker">СВОБОДНЫЕ МЫСЛИ</p><h2>Что сегодня было важным?</h2></div></div>
+<textarea id="dayNote" class="note-field" placeholder="Мысли, события, маленькие радости…" aria-label="Заметка за день"></textarea>
+<div class="save-row"><span class="save-status" id="saveStatus">Записи остаются только в этом браузере</span><div class="save-actions"><button class="text-button danger-button" id="deleteDay" hidden>Удалить</button><button class="primary-button" id="saveDay">Сохранить день</button></div></div>
+</article>
+<article class="card">
+<div class="section-heading"><div><p class="kicker">МАЛЕНЬКИЕ ШАГИ</p><h2>Мои привычки</h2></div><button class="text-button" id="manageHabits">Настроить</button></div>
+<div class="habit-grid" id="habitGrid"></div>
+</article>
+</div>
+<div class="secondary-column">
+<article class="card">
+<div class="section-heading"><div><p class="kicker">БЕЗ ОЦЕНОК</p><h2>Алкоголь и курение</h2></div></div>
+<div id="trackers"></div>
+</article>
+<article class="card">
+<div class="section-heading"><div><p class="kicker">ЗАПОМНИТЬ ГОЛОСОМ</p><h2>Голосовые заметки</h2></div></div>
+<div class="record-row"><button class="record-button" id="recordButton"><span class="record-dot"></span><span id="recordLabel">Записать голос</span></button><span class="record-hint" id="recordHint">Понадобится доступ к микрофону</span></div>
+<label class="secondary-button upload-label">Добавить аудиофайл<input id="audioFile" type="file" accept="audio/*" multiple hidden></label>
+<div class="audio-list" id="audioList"></div>
+</article>
+<div class="privacy-note"><span>🔐</span><span><b>Твоё личное пространство.</b> Дневник и аудио не отправляются в интернет.</span></div>
+</div>
+</div>
+</section>
+<section class="screen" id="screen-calendar" aria-labelledby="calendarHeading">
+<div class="screen-title"><div><p class="kicker">ДЕНЬ ЗА ДНЁМ</p><h1 id="calendarHeading">Календарь</h1></div><button class="secondary-button" id="jumpToday">Сегодня</button></div>
+<article class="card calendar-card"><div class="calendar-heading"><button class="round-button" id="previousMonth" aria-label="Предыдущий месяц">‹</button><h2 id="monthTitle"></h2><button class="round-button" id="nextMonth" aria-label="Следующий месяц">›</button></div><div class="weekdays" aria-hidden="true"><span>ПН</span><span>ВТ</span><span>СР</span><span>ЧТ</span><span>ПТ</span><span>СБ</span><span>ВС</span></div><div class="calendar-grid" id="calendarGrid"></div><div class="calendar-legend"><span class="legend-dot"></span> Есть запись <span class="legend-mood">Эмодзи показывает настроение</span></div></article>
+<article class="card selected-day-card" id="selectedDayCard"><div class="section-heading"><div><p class="kicker" id="selectedDayKicker">ВЫБРАННЫЙ ДЕНЬ</p><h2 id="selectedDayTitle"></h2></div><button class="primary-button" id="openSelectedDay">Открыть дневник</button></div><p class="selected-preview" id="selectedDayPreview"></p></article>
+</section>
+<section class="screen" id="screen-stats" aria-labelledby="statsHeading">
+<div class="screen-title"><div><p class="kicker">БЕРЕЖНО К СЕБЕ</p><h1 id="statsHeading">Статистика</h1></div><div class="period-tabs" id="periodTabs"><button class="active" data-period="week">Неделя</button><button data-period="month">Месяц</button><button data-period="year">Год</button></div></div>
+<div id="emptyStats" class="card empty-state" hidden><span>🌿</span><h2>История начнётся с первого дня</h2><p>Заполни запись, и здесь появятся твои личные наблюдения.</p><button class="primary-button" data-go="today">К дневнику</button></div>
+<div id="statsContent">
+<div class="metric-grid">
+<article class="card metric-card"><span class="metric-icon">✎</span><b id="daysLogged">0</b><small>дней с записью</small></article>
+<article class="card metric-card"><span class="metric-icon">🍷</span><b id="alcoholMetric">0</b><small>дней с алкоголем</small></article>
+<article class="card metric-card"><span class="metric-icon">🚭</span><b id="smokeFreeMetric">0</b><small>дней без курения</small></article>
+<article class="card metric-card"><span class="metric-icon">🌱</span><b id="habitsMetric">0</b><small>отметок привычек</small></article>
+</div>
+<div class="stats-columns">
+<article class="card"><div class="section-heading"><div><p class="kicker">КАК Я СЕБЯ ЧУВСТВОВАЛА</p><h2>Настроение</h2></div></div><div class="mood-summary" id="moodSummary"></div><div class="mood-bars" id="moodBars"></div></article>
+<article class="card"><div class="section-heading"><div><p class="kicker">МОЯ РЕГУЛЯРНОСТЬ</p><h2>Привычки</h2></div></div><div class="habit-stats" id="habitStats"></div></article>
+</div>
+<article class="card trend-card"><div class="section-heading"><div><p class="kicker">ДИНАМИКА</p><h2 id="trendTitle">Дни с записью</h2></div><span class="chart-legend"><i></i>Запись</span></div><div class="trend-chart" id="trendChart"></div></article>
+<div class="period-details" id="periodDetails"></div>
+</div>
+</section>
+<section class="screen" id="screen-settings" aria-labelledby="settingsHeading">
+<div class="screen-title"><div><p class="kicker">ТВОЁ ПРИЛОЖЕНИЕ</p><h1 id="settingsHeading">Настройки</h1></div></div>
+<div class="settings-grid">
+<article class="card settings-card"><div class="section-heading"><div><p class="kicker">ПЕРЕНОС И СОХРАННОСТЬ</p><h2>Резервная копия</h2></div><span>📦</span></div><p class="body-copy">Копия включает все дневниковые записи и отдельные аудиофайлы в переносимом ZIP-архиве. Она создаётся на устройстве и никуда не загружается.</p><button class="primary-button wide-button" id="exportBackup">Скачать резервную копию ZIP</button><label class="secondary-button wide-button upload-label">Восстановить из копии<input id="backupFile" type="file" accept=".zip,.json,application/zip,application/json" hidden></label><p class="small-note">Восстановление добавит записи из копии и заменит записи с совпадающими датами. Старые JSON-копии тоже поддерживаются.</p></article>
+<article class="card settings-card"><div class="section-heading"><div><p class="kicker">МОИ РИТУАЛЫ</p><h2>Список привычек</h2></div><button class="text-button" id="addHabit">＋ Добавить</button></div><p class="body-copy">Можно изменить названия и скрыть привычки, которые тебе сейчас не подходят.</p><div id="habitSettings"></div></article>
+<article class="card settings-card"><div class="section-heading"><div><p class="kicker">ВСЕГДА РЯДОМ</p><h2>Установка и офлайн</h2></div><span>📱</span></div><p class="body-copy">Добавь My Days на экран «Домой» из меню «Поделиться» в Safari. После первой загрузки приложение открывается без интернета.</p><div class="offline-status" id="offlineStatus">Проверяем готовность офлайн…</div><button class="secondary-button wide-button" id="installHelp">Как установить на iPhone</button></article>
+<article class="card settings-card privacy-card"><span class="privacy-large">🔒</span><h2>Только на твоём устройстве</h2><p>Приложение не содержит регистрации, аналитики, рекламы, облачного хранилища и внешних API. Данные хранятся в IndexedDB этого браузера.</p></article>
+</div>
+</section>
+</main>
+<nav class="bottom-nav" aria-label="Основная навигация"><button class="active" data-screen="today"><span>✎</span><small>Сегодня</small></button><button data-screen="calendar"><span>▦</span><small>Календарь</small></button><button data-screen="stats"><span>⌁</span><small>Статистика</small></button><button data-screen="settings"><span>⚙</span><small>Настройки</small></button></nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="confirmDialog" class="confirm-dialog"><form method="dialog"><h2 id="dialogTitle">Подтверждение</h2><p id="dialogText"></p><div class="dialog-actions"><button class="secondary-button" value="cancel">Отмена</button><button class="primary-button" id="dialogAccept" value="ok">Продолжить</button></div></form></dialog>
+<script src="./app.js" defer></script>
+</body></html>
