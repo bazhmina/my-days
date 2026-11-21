@@ -67,3 +67,24 @@
 @media(max-width:600px){.storage-info-button{max-width:160px;text-align:right;line-height:1.2}.add-reminder-form{grid-template-columns:minmax(0,1fr) 90px}.add-reminder-form button{grid-column:1/-1;width:100%}.reminders-card{padding:16px}.reminder-row{gap:8px;padding:10px}.reminder-check{flex-direction:column;gap:1px;font-size:9px}.backup-details{padding:14px 16px}}
 .auth-gate[hidden]{display:none!important}.auth-gate{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px;background:#f7f7f4}.auth-card{width:min(100%,410px);padding:28px;background:#fff;border-radius:24px;box-shadow:0 12px 34px #292b2612}.auth-card>.brandmark{margin:0 auto 18px}.auth-card h1{text-align:center;font-size:23px;margin:0 0 10px}.auth-card>.kicker{text-align:center}.auth-card .body-copy{text-align:center}.auth-card label,.confirm-dialog label{display:block;margin:12px 0;font-size:12px;font-weight:650;color:var(--ink)}.auth-card input,.confirm-dialog input{display:block;width:100%;margin-top:6px;min-height:46px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fafaf8}.auth-card input:focus,.confirm-dialog input:focus{outline:2px solid #b5c2ae;outline-offset:1px}.auth-error{min-height:1.4em;color:#a3413b;font-size:12px;margin:8px 0 0}.auth-card .wide-button{margin-top:10px}.auth-card .small-note{font-size:11px}.confirm-dialog{max-width:min(92vw,440px)}#backupPasswordForm{padding:0}
 body.locked>header,body.locked>main,body.locked>nav,body.locked>#toast{display:none!important}.dialog-actions{flex-wrap:wrap}
+
+/* Clear color coding for moods and the calendar tracker view. */
+.mood-option .emoji{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;}
+.mood-option .emoji.mood-warm,.day-mood.mood-warm,.mood-chip.mood-warm,.legend-swatch.mood-warm{background:#fff1ad;color:#69551d;}
+.mood-option .emoji.mood-heavy,.day-mood.mood-heavy,.mood-chip.mood-heavy,.legend-swatch.mood-heavy{background:#ffe0dd;color:#913b35;}
+.day-mood{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;padding:1px 3px;border-radius:8px;}
+.mood-chip{display:inline-flex;align-items:center;gap:4px;border-radius:10px;padding:6px 8px;font-size:10px;}
+.calendar-modes{display:flex;justify-content:center;gap:5px;max-width:430px;margin:0 auto 18px;padding:4px;border-radius:13px;background:#f1f2ed;}
+.calendar-modes button{min-height:38px;flex:1;border:0;border-radius:10px;background:transparent;padding:8px 12px;color:#777a71;font-size:11px;font-weight:650;}
+.calendar-modes button.active{background:#fff;color:var(--ink);box-shadow:0 1px 5px #282b240d;}
+.calendar-legend{flex-wrap:wrap;justify-content:center;gap:7px;line-height:1.6;}
+.legend-swatch{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;font-size:13px;}
+.legend-dot,.tracker-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none;}
+.alcohol-dot{background:#d75a54;}
+.smoking-dot{background:#4f86cc;}
+.calendar-indicators{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);display:flex;gap:3px;align-items:center;}
+.tracker-dot{width:7px;height:7px;}
+.reminder-dot{top:1px;right:4px;bottom:auto;}
+@media(max-width:390px){.calendar-modes{margin-bottom:14px}.calendar-modes button{font-size:10px;padding:7px 5px}.calendar-legend{font-size:9px;gap:5px}}
+.mood-bar-row.mood-warm .mood-bar-fill{background:#e8c64f;}
+.mood-bar-row.mood-heavy .mood-bar-fill{background:#d97870;}
