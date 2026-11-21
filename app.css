@@ -36,3 +36,32 @@
   .tracker-details { grid-template-columns: minmax(0, 1fr); }
   .section-heading h2 { overflow-wrap: anywhere; }
 }
+
+.storage-info-button{border:0;background:transparent;padding:8px;color:var(--muted);font-size:11px;cursor:pointer}
+.storage-info-button:hover{color:var(--green-dark)}
+.audio-privacy{margin:-7px 0 12px;line-height:1.5}
+.reminders-card{max-width:760px;margin:0 auto 15px}
+.reminder-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.reminder-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#fbfbf9;min-width:0}
+.reminder-row.done{background:var(--mint);border-color:#dce6d7}
+.reminder-check{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);white-space:nowrap}
+.reminder-check input,.selected-reminder input{width:20px;height:20px;accent-color:var(--green)}
+.reminder-main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.reminder-title-input{width:100%;min-width:0;padding:5px 7px;border:1px solid transparent;border-radius:7px;background:transparent;font-weight:650}
+.reminder-title-input:focus{outline:2px solid #b5c2ae;background:#fff}
+.reminder-main small{padding-left:7px;color:var(--muted);font-size:10px}
+.remove-reminder{width:36px;height:36px;border:0;border-radius:10px;background:#f5f1ee;color:#90746b;font-size:20px}
+.add-reminder-form{display:grid;grid-template-columns:minmax(0,1fr) 112px auto;align-items:end;gap:10px;margin-top:17px;padding-top:15px;border-top:1px solid var(--line)}
+.add-reminder-form label{display:grid;gap:6px;color:var(--muted);font-size:11px}
+.add-reminder-form input{width:100%;min-width:0;height:42px;border:1px solid var(--line);border-radius:11px;padding:8px 10px;background:#fff;color:var(--ink)}
+.add-reminder-form input:focus{outline:2px solid #b5c2ae;outline-offset:1px}
+.backup-details{max-width:760px;margin:0 auto;padding:16px 20px}
+.backup-details summary{cursor:pointer;font-weight:700;color:var(--green-dark);padding:5px 0}
+.backup-details[open] summary{margin-bottom:12px}
+.selected-reminders{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.selected-reminder{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:12px;background:var(--mint);font-size:13px}
+.calendar-day.has-reminder{box-shadow:inset 0 0 0 1px #a8b79f}
+.calendar-day.reminders-done{background:#edf2e9}
+.reminder-dot{position:absolute;right:5px;bottom:2px;color:var(--green-dark);font-size:13px;font-weight:800}
+.calendar-day{position:relative}
+@media(max-width:600px){.storage-info-button{max-width:160px;text-align:right;line-height:1.2}.add-reminder-form{grid-template-columns:minmax(0,1fr) 90px}.add-reminder-form button{grid-column:1/-1;width:100%}.reminders-card{padding:16px}.reminder-row{gap:8px;padding:10px}.reminder-check{flex-direction:column;gap:1px;font-size:9px}.backup-details{padding:14px 16px}}

@@ -9,7 +9,7 @@
 <title>Мои дни — личный дневник</title>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="#" aria-label="Мои дни, на главную"><span class="brandmark">🌱</span><span><b>Мои дни</b><small>тихое место для себя</small></span></a><div class="top-actions"><span class="private-label">🔒 Только на устройстве</span><button class="icon-button" id="installButton" aria-label="Установить приложение" title="Установить приложение">＋</button></div></header>
+<header class="topbar"><a class="brand" href="#" aria-label="Мои дни, на главную"><span class="brandmark">🌱</span><span><b>Мои дни</b><small>тихое место для себя</small></span></a><div class="top-actions"><button class="private-label storage-info-button" id="storageInfo" type="button">🔒 Данные в этом браузере</button></div></header>
 <main class="shell">
 <section class="screen active" id="screen-today" aria-labelledby="todayHeading">
 <div class="screen-title"><div><p class="kicker">МОЙ ДНЕВНИК</p><h1 id="todayHeading">Сегодня</h1></div><div class="date-controls"><button class="round-button" id="previousDay" aria-label="Предыдущий день">‹</button><button class="date-pill" id="todayDate"></button><button class="round-button" id="nextDay" aria-label="Следующий день">›</button></div></div>
@@ -24,7 +24,7 @@
 <div class="save-row"><span class="save-status" id="saveStatus">Записи остаются только в этом браузере</span><div class="save-actions"><button class="text-button danger-button" id="deleteDay" hidden>Удалить</button><button class="primary-button" id="saveDay">Сохранить день</button></div></div>
 </article>
 <article class="card">
-<div class="section-heading"><div><p class="kicker">МАЛЕНЬКИЕ ШАГИ</p><h2>Мои привычки</h2></div><button class="text-button" id="manageHabits">Настроить</button></div>
+<div class="section-heading"><div><p class="kicker">МАЛЕНЬКИЕ ШАГИ</p><h2>Мои привычки</h2></div></div>
 <div class="habit-grid" id="habitGrid"></div>
 </article>
 </div>
@@ -34,7 +34,7 @@
 <div id="trackers"></div>
 </article>
 <article class="card">
-<div class="section-heading"><div><p class="kicker">ЗАПОМНИТЬ ГОЛОСОМ</p><h2>Голосовые заметки</h2></div></div>
+<div class="section-heading"><div><p class="kicker">ЗАПОМНИТЬ ГОЛОСОМ</p><h2>Голосовые заметки</h2></div></div><p class="small-note audio-privacy">Аудио сохраняется в дневнике этого браузера и не отправляется в GitHub.</p>
 <div class="record-row"><button class="record-button" id="recordButton"><span class="record-dot"></span><span id="recordLabel">Записать голос</span></button><span class="record-hint" id="recordHint">Понадобится доступ к микрофону</span></div>
 <label class="secondary-button upload-label">Добавить аудиофайл<input id="audioFile" type="file" accept="audio/*" multiple hidden></label>
 <div class="audio-list" id="audioList"></div>
@@ -46,7 +46,7 @@
 <section class="screen" id="screen-calendar" aria-labelledby="calendarHeading">
 <div class="screen-title"><div><p class="kicker">ДЕНЬ ЗА ДНЁМ</p><h1 id="calendarHeading">Календарь</h1></div><button class="secondary-button" id="jumpToday">Сегодня</button></div>
 <article class="card calendar-card"><div class="calendar-heading"><button class="round-button" id="previousMonth" aria-label="Предыдущий месяц">‹</button><h2 id="monthTitle"></h2><button class="round-button" id="nextMonth" aria-label="Следующий месяц">›</button></div><div class="weekdays" aria-hidden="true"><span>ПН</span><span>ВТ</span><span>СР</span><span>ЧТ</span><span>ПТ</span><span>СБ</span><span>ВС</span></div><div class="calendar-grid" id="calendarGrid"></div><div class="calendar-legend"><span class="legend-dot"></span> Есть запись <span class="legend-mood">Эмодзи показывает настроение</span></div></article>
-<article class="card selected-day-card" id="selectedDayCard"><div class="section-heading"><div><p class="kicker" id="selectedDayKicker">ВЫБРАННЫЙ ДЕНЬ</p><h2 id="selectedDayTitle"></h2></div><button class="primary-button" id="openSelectedDay">Открыть дневник</button></div><p class="selected-preview" id="selectedDayPreview"></p></article>
+<article class="card selected-day-card" id="selectedDayCard"><div class="section-heading"><div><p class="kicker" id="selectedDayKicker">ВЫБРАННЫЙ ДЕНЬ</p><h2 id="selectedDayTitle"></h2></div><button class="primary-button" id="openSelectedDay">Открыть дневник</button></div><p class="selected-preview" id="selectedDayPreview"></p><div id="selectedReminders" class="selected-reminders"></div></article>
 </section>
 <section class="screen" id="screen-stats" aria-labelledby="statsHeading">
 <div class="screen-title"><div><p class="kicker">БЕРЕЖНО К СЕБЕ</p><h1 id="statsHeading">Статистика</h1></div><div class="period-tabs" id="periodTabs"><button class="active" data-period="week">Неделя</button><button data-period="month">Месяц</button><button data-period="year">Год</button></div></div>
@@ -66,18 +66,18 @@
 <div class="period-details" id="periodDetails"></div>
 </div>
 </section>
-<section class="screen" id="screen-settings" aria-labelledby="settingsHeading">
-<div class="screen-title"><div><p class="kicker">ТВОЁ ПРИЛОЖЕНИЕ</p><h1 id="settingsHeading">Настройки</h1></div></div>
-<div class="settings-grid">
-<article class="card settings-card"><div class="section-heading"><div><p class="kicker">ПЕРЕНОС И СОХРАННОСТЬ</p><h2>Резервная копия</h2></div><span>📦</span></div><p class="body-copy">Копия включает все дневниковые записи и отдельные аудиофайлы в переносимом ZIP-архиве. Она создаётся на устройстве и никуда не загружается.</p><button class="primary-button wide-button" id="exportBackup">Скачать резервную копию ZIP</button><label class="secondary-button wide-button upload-label">Восстановить из копии<input id="backupFile" type="file" accept=".zip,.json,application/zip,application/json" hidden></label><p class="small-note">Восстановление добавит записи из копии и заменит записи с совпадающими датами. Старые JSON-копии тоже поддерживаются.</p></article>
-<article class="card settings-card"><div class="section-heading"><div><p class="kicker">МОИ РИТУАЛЫ</p><h2>Список привычек</h2></div><button class="text-button" id="addHabit">＋ Добавить</button></div><p class="body-copy">Можно изменить названия и скрыть привычки, которые тебе сейчас не подходят.</p><div id="habitSettings"></div></article>
-<article class="card settings-card"><div class="section-heading"><div><p class="kicker">ВСЕГДА РЯДОМ</p><h2>Установка и офлайн</h2></div><span>📱</span></div><p class="body-copy">Добавь My Days на экран «Домой» из меню «Поделиться» в Safari. После первой загрузки приложение открывается без интернета.</p><div class="offline-status" id="offlineStatus">Проверяем готовность офлайн…</div><button class="secondary-button wide-button" id="installHelp">Как установить на iPhone</button></article>
-<article class="card settings-card privacy-card"><span class="privacy-large">🔒</span><h2>Только на твоём устройстве</h2><p>Приложение не содержит регистрации, аналитики, рекламы, облачного хранилища и внешних API. Данные хранятся в IndexedDB этого браузера.</p></article>
-</div>
+<section class="screen" id="screen-reminders" aria-labelledby="remindersHeading">
+<div class="screen-title"><div><p class="kicker">ЧТОБЫ НЕ ЗАБЫТЬ</p><h1 id="remindersHeading">Платежи и важное</h1></div></div>
+<article class="card reminders-card"><div class="section-heading"><div><p class="kicker">ПОВТОРЯЕТСЯ КАЖДЫЙ МЕСЯЦ</p><h2>Мои напоминания</h2></div></div>
+<p class="body-copy">Добавь название и число месяца. Отмечай выполнение здесь или в календаре — отметка сохранится отдельно для каждого месяца.</p>
+<div id="reminderList" class="reminder-list"></div>
+<form id="addReminderForm" class="add-reminder-form"><label>Что нужно сделать?<input id="newReminderTitle" maxlength="60" required placeholder="Например, оплатить квартиру"></label><label>Число месяца<input id="newReminderDay" type="number" min="1" max="31" required value="1"></label><button class="primary-button" type="submit">Добавить</button></form>
+<p class="small-note">Это список внутри My Days, а не сигнал телефона. Он покажет дело в нужную дату, когда откроешь приложение.</p></article>
+<details class="card backup-details"><summary>Резервная копия</summary><p class="body-copy">Записи сохраняются автоматически в этом браузере. ZIP не нужно скачивать после каждой записи. Копия нужна для переноса или дополнительного хранения: она скачивается как отдельный файл и сама не обновляется.</p><p class="small-note">Файл сохранится туда, куда укажет браузер (обычно «Загрузки» или «Файлы»). В Облако Mail.ru его можно перенести вручную; My Days сам туда данные не отправляет.</p><button class="primary-button wide-button" id="exportBackup">Скачать копию</button><label class="secondary-button wide-button upload-label">Восстановить из копии<input id="backupFile" type="file" accept=".zip,.json,application/zip,application/json" hidden></label></details>
 </section>
 </main>
-<nav class="bottom-nav" aria-label="Основная навигация"><button class="active" data-screen="today"><span>✎</span><small>Сегодня</small></button><button data-screen="calendar"><span>▦</span><small>Календарь</small></button><button data-screen="stats"><span>⌁</span><small>Статистика</small></button><button data-screen="settings"><span>⚙</span><small>Настройки</small></button></nav>
+<nav class="bottom-nav" aria-label="Основная навигация"><button class="active" data-screen="today"><span>✎</span><small>Сегодня</small></button><button data-screen="calendar"><span>▦</span><small>Календарь</small></button><button data-screen="stats"><span>⌁</span><small>Статистика</small></button><button data-screen="reminders"><span>✓</span><small>Важно</small></button></nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<dialog id="confirmDialog" class="confirm-dialog"><form method="dialog"><h2 id="dialogTitle">Подтверждение</h2><p id="dialogText"></p><div class="dialog-actions"><button class="secondary-button" value="cancel">Отмена</button><button class="primary-button" id="dialogAccept" value="ok">Продолжить</button></div></form></dialog>
+<dialog id="confirmDialog" class="confirm-dialog"><form method="dialog"><h2 id="dialogTitle">Подтверждение</h2><p id="dialogText"></p><div class="dialog-actions"><button class="secondary-button" value="cancel">Отмена</button><button class="primary-button" id="dialogAccept" value="ok">Продолжить</button></div></form></dialog><dialog id="storageDialog" class="confirm-dialog"><form method="dialog"><h2>Где хранятся записи?</h2><p>Тексты, отметки, напоминания и аудио хранятся в базе этого браузера на этом устройстве. На GitHub размещён только код приложения — записи туда не отправляются. Другой телефон или браузер не увидит эти данные автоматически. На iPhone Safari и значок приложения на экране «Домой» тоже могут иметь отдельные хранилища. Для переноса используй ZIP-копию.</p><div class="dialog-actions"><button class="primary-button" value="close">Понятно</button></div></form></dialog>
 <script src="./app.js" defer></script>
 </body></html>
