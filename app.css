@@ -88,3 +88,34 @@ body.locked>header,body.locked>main,body.locked>nav,body.locked>#toast{display:n
 @media(max-width:390px){.calendar-modes{margin-bottom:14px}.calendar-modes button{font-size:10px;padding:7px 5px}.calendar-legend{font-size:9px;gap:5px}}
 .mood-bar-row.mood-warm .mood-bar-fill{background:#e8c64f;}
 .mood-bar-row.mood-heavy .mood-bar-fill{background:#d97870;}
+
+/* Three-series comparison chart, kept local to the device. */
+.correlation-card{margin-top:14px;}
+.correlation-card .section-heading{margin-bottom:8px;}
+.correlation-description{margin:0 0 12px;}
+.correlation-legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 8px;color:#777a71;font-size:10px;}
+.correlation-legend>span{display:inline-flex;align-items:center;gap:5px;}
+.line-swatch{display:inline-block;width:16px;height:3px;border-radius:3px;}
+.smoking-line.line-swatch{background:#4f86cc;}
+.alcohol-line.line-swatch{background:#d75a54;}
+.mood-line.line-swatch{background:#718d69;}
+.correlation-plot{display:grid;grid-template-columns:34px minmax(0,1fr);gap:5px;align-items:stretch;}
+.correlation-y-axis{height:180px;display:flex;flex-direction:column;justify-content:space-between;padding:0 0 4px;text-align:right;color:#96988f;font-size:8px;}
+.correlation-chart{height:180px;min-width:0;}
+.correlation-chart svg{display:block;width:100%;height:180px;overflow:visible;}
+.chart-grid-line{stroke:#ecece7;stroke-width:1;}
+.correlation-chart polyline{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+.correlation-chart polyline.smoking-line{stroke:#4f86cc;}
+.correlation-chart polyline.alcohol-line{stroke:#d75a54;}
+.correlation-chart polyline.mood-line{stroke:#718d69;}
+.correlation-chart .chart-point{stroke:#fff;stroke-width:1.4;}
+.correlation-chart .chart-point.smoking-line{fill:#4f86cc;}
+.correlation-chart .chart-point.alcohol-line{fill:#d75a54;}
+.correlation-chart .chart-point.mood-line{fill:#718d69;}
+.correlation-labels{display:flex;justify-content:space-between;min-height:18px;margin-top:2px;color:#96988f;font-size:8px;}
+.correlation-labels span{flex:1;min-width:0;text-align:center;white-space:nowrap;}
+.correlation-summary{margin-top:12px;padding:11px 13px;background:#f7f7f4;border-radius:13px;font-size:11px;line-height:1.5;}
+.correlation-summary p{margin:2px 0;}
+.correlation-footnote{margin:10px 0 0;}
+.chart-empty{text-align:center;padding:55px 0 0;}
+@media(max-width:760px){#screen-stats .screen-title{align-items:flex-start;flex-direction:column;gap:10px}#screen-stats .period-tabs{width:100%;justify-content:space-between}.correlation-card{padding:16px}.correlation-legend{gap:9px}.correlation-y-axis,.correlation-chart,.correlation-chart svg{height:160px}}
