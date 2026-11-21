@@ -3,12 +3,22 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Мои дни">
-<meta name="description" content="Личный дневник, который хранится только на этом устройстве">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self';">
+<meta name="description" content="Личный дневник с паролем и локальным шифрованием записей">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';">
 <link rel="manifest" href="./manifest.json"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png"><link rel="stylesheet" href="./app.css">
 <title>Мои дни — личный дневник</title>
 </head>
 <body>
+<section class="auth-gate" id="authGate" aria-labelledby="authTitle" hidden>
+<form class="auth-card" id="authForm">
+<div class="brandmark">🌱</div><p class="kicker">ЛИЧНЫЙ ДНЕВНИК</p><h1 id="authTitle">Защити свои записи</h1>
+<p class="body-copy" id="authMessage">Задай пароль, чтобы шифровать записи на этом устройстве. Пароль не отправляется в интернет.</p>
+<label id="passwordLabel">Пароль<input id="appPassword" type="password" autocomplete="current-password" minlength="12" required></label>
+<label id="confirmPasswordLabel" hidden>Повтори пароль<input id="confirmPassword" type="password" autocomplete="new-password" minlength="12"></label>
+<p class="small-note" id="passwordWarning">Лучше придумать длинную фразу из нескольких слов. Если её забыть, записи нельзя открыть — сброса нет.</p>
+<button class="primary-button wide-button" id="authSubmit" type="submit">Продолжить</button>
+<p class="auth-error" id="authError" role="alert"></p>
+</form></section>
 <header class="topbar"><a class="brand" href="#" aria-label="Мои дни, на главную"><span class="brandmark">🌱</span><span><b>Мои дни</b><small>тихое место для себя</small></span></a><div class="top-actions"><button class="private-label storage-info-button" id="storageInfo" type="button">🔒 Данные в этом браузере</button></div></header>
 <main class="shell">
 <section class="screen active" id="screen-today" aria-labelledby="todayHeading">
@@ -33,13 +43,7 @@
 <div class="section-heading"><div><p class="kicker">БЕЗ ОЦЕНОК</p><h2>Алкоголь и курение</h2></div></div>
 <div id="trackers"></div>
 </article>
-<article class="card">
-<div class="section-heading"><div><p class="kicker">ЗАПОМНИТЬ ГОЛОСОМ</p><h2>Голосовые заметки</h2></div></div><p class="small-note audio-privacy">Аудио сохраняется в дневнике этого браузера и не отправляется в GitHub.</p>
-<div class="record-row"><button class="record-button" id="recordButton"><span class="record-dot"></span><span id="recordLabel">Записать голос</span></button><span class="record-hint" id="recordHint">Понадобится доступ к микрофону</span></div>
-<label class="secondary-button upload-label">Добавить аудиофайл<input id="audioFile" type="file" accept="audio/*" multiple hidden></label>
-<div class="audio-list" id="audioList"></div>
-</article>
-<div class="privacy-note"><span>🔐</span><span><b>Твоё личное пространство.</b> Дневник и аудио не отправляются в интернет.</span></div>
+<div class="privacy-note"><span>🔐</span><span><b>Твоё личное пространство.</b> Записи хранятся на устройстве в зашифрованном виде.</span></div>
 </div>
 </div>
 </section>
@@ -73,11 +77,11 @@
 <div id="reminderList" class="reminder-list"></div>
 <form id="addReminderForm" class="add-reminder-form"><label>Что нужно сделать?<input id="newReminderTitle" maxlength="60" required placeholder="Например, оплатить квартиру"></label><label>Число месяца<input id="newReminderDay" type="number" min="1" max="31" required value="1"></label><button class="primary-button" type="submit">Добавить</button></form>
 <p class="small-note">Это список внутри My Days, а не сигнал телефона. Он покажет дело в нужную дату, когда откроешь приложение.</p></article>
-<details class="card backup-details"><summary>Резервная копия</summary><p class="body-copy">Записи сохраняются автоматически в этом браузере. ZIP не нужно скачивать после каждой записи. Копия нужна для переноса или дополнительного хранения: она скачивается как отдельный файл и сама не обновляется.</p><p class="small-note">Файл сохранится туда, куда укажет браузер (обычно «Загрузки» или «Файлы»). В Облако Mail.ru его можно перенести вручную; My Days сам туда данные не отправляет.</p><button class="primary-button wide-button" id="exportBackup">Скачать копию</button><label class="secondary-button wide-button upload-label">Восстановить из копии<input id="backupFile" type="file" accept=".zip,.json,application/zip,application/json" hidden></label></details>
+<details class="card backup-details"><summary>Резервная копия</summary><p class="body-copy">Дневник автоматически сохраняется на устройстве в зашифрованном виде. ZIP-копия тоже зашифрована твоим паролем; скачивать её после каждой записи не нужно.</p><p class="small-note">Для переноса открой My Days на новом устройстве, задай пароль и выбери эту копию. При восстановлении введи пароль, которым она была создана. Забудешь пароль — открыть копию не получится. Можно перенести ZIP вручную в Облако Mail.ru; приложение само туда ничего не отправляет.</p><button class="primary-button wide-button" id="exportBackup">Скачать зашифрованную копию</button><label class="secondary-button wide-button upload-label">Восстановить из копии<input id="backupFile" type="file" accept=".zip,.json,application/zip,application/json" hidden></label></details>
 </section>
 </main>
 <nav class="bottom-nav" aria-label="Основная навигация"><button class="active" data-screen="today"><span>✎</span><small>Сегодня</small></button><button data-screen="calendar"><span>▦</span><small>Календарь</small></button><button data-screen="stats"><span>⌁</span><small>Статистика</small></button><button data-screen="reminders"><span>✓</span><small>Важно</small></button></nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<dialog id="confirmDialog" class="confirm-dialog"><form method="dialog"><h2 id="dialogTitle">Подтверждение</h2><p id="dialogText"></p><div class="dialog-actions"><button class="secondary-button" value="cancel">Отмена</button><button class="primary-button" id="dialogAccept" value="ok">Продолжить</button></div></form></dialog><dialog id="storageDialog" class="confirm-dialog"><form method="dialog"><h2>Где хранятся записи?</h2><p>Тексты, отметки, напоминания и аудио хранятся в базе этого браузера на этом устройстве. На GitHub размещён только код приложения — записи туда не отправляются. Другой телефон или браузер не увидит эти данные автоматически. На iPhone Safari и значок приложения на экране «Домой» тоже могут иметь отдельные хранилища. Для переноса используй ZIP-копию.</p><div class="dialog-actions"><button class="primary-button" value="close">Понятно</button></div></form></dialog>
+<dialog id="confirmDialog" class="confirm-dialog"><form method="dialog"><h2 id="dialogTitle">Подтверждение</h2><p id="dialogText"></p><div class="dialog-actions"><button class="secondary-button" value="cancel">Отмена</button><button class="primary-button" id="dialogAccept" value="ok">Продолжить</button></div></form></dialog><dialog id="storageDialog" class="confirm-dialog"><form method="dialog"><h2>Защита дневника</h2><p>Записи зашифрованы паролем и хранятся на этом устройстве. Пароль и дневник не отправляются на GitHub. Сброса пароля нет: если забудешь его, дневник и копии, созданные с ним, открыть нельзя.</p><div class="dialog-actions"><button class="secondary-button" id="changePasswordButton" type="button">Сменить пароль</button><button class="secondary-button" id="lockApp" type="button">Заблокировать</button><button class="primary-button" value="close">Понятно</button></div></form></dialog><dialog id="changePasswordDialog" class="confirm-dialog"><form id="changePasswordForm"><h2>Сменить пароль</h2><p>После смены пароля создай новую резервную копию: старые копии останутся защищены прежним паролем.</p><label>Новый пароль<input id="newPassword" type="password" minlength="12" autocomplete="new-password" required></label><label>Повтори пароль<input id="repeatNewPassword" type="password" minlength="12" autocomplete="new-password" required></label><p class="auth-error" id="changePasswordError" role="alert"></p><div class="dialog-actions"><button class="secondary-button" id="cancelChangePassword" type="button">Отмена</button><button class="primary-button" type="submit">Сменить</button></div></form></dialog><dialog id="backupPasswordDialog" class="confirm-dialog"><form id="backupPasswordForm"><h2>Пароль копии</h2><p>Введи пароль, которым была защищена эта ZIP-копия.</p><label>Пароль<input id="backupPassword" type="password" autocomplete="current-password" required></label><p class="auth-error" id="backupPasswordError" role="alert"></p><div class="dialog-actions"><button class="secondary-button" id="cancelBackupPassword" type="button">Отмена</button><button class="primary-button" type="submit">Открыть копию</button></div></form></dialog>
 <script src="./app.js" defer></script>
 </body></html>
